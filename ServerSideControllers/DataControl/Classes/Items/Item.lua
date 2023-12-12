@@ -60,7 +60,7 @@ function IdFunction(Item)
 	-- end of the hashed string and have the decrypter do the shifting in reverse. 
 	local salt = "C%1(k3-" 
 	for i =1, #Item.Name,1 do
-		temp += keyTable[IndexOf(Item.Name[i])]
+		temp += keyTable[IndexOf(Item.Name[i],baseTable)]
 	end 
 	local x = math.random(1,#Item.Name)
 	
@@ -73,7 +73,13 @@ function DecryptId(Input)
 	local keyTable 		= {q,a,z,x,s,w,e,d,c,v,f,r,t,g,b,n,h,y,u,j,m,I,k,o,l,p,9,2,3,5,6,4,1,0,8,7}
 	local salt 		= "C%1(k3-"
 	local saltLocation 	= String.Find(Input,salt)
-	return String.sub(1,saltLocation) .. String.sub(saltLocation+7,Input.Length)
+	Input 			= String.sub(1,saltLocation) .. String.sub(saltLocation+7,Input.Length)
+	local temp		= ""
+	for i=1, Input.Length do 
+		temp += baseTable[IndexOf(Item.Name[i],keyTable)]
+	end
+	
+	return temp`1	
 end
 
 function Item.NewEmpty()
