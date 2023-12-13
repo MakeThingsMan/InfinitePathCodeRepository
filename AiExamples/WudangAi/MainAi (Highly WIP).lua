@@ -131,7 +131,7 @@ function DangerCalculator()
 			local pStats =  optimizedPlayerTable.Get(game.Players[v.Name])
 			dangerScore = (pStats.Damage.Qi + pStats.Damage.Physical + pStats.Defense.Qi + pStats.Defense.Physical) * pStats.Cultivation.State -- take the main combat stats and scale them
 			dangerScore += tonumber(pStats.Bloodlines.Active ~= -1)*100 + pStats.Bloodlines.Obtained.Count*10 + tonumber(pStats.Constitution ~= -1)*100 + tonumber(pStats.Artifact ~= "N/A")*100
-			
+			dangerScore += tonumber(config.Range[config.preferedRange]  < config.Range[pStats.EquippedItem.Range]) *100
 		end
 	end
 end
@@ -333,17 +333,17 @@ function moveToPoint(waypoints,nextwaypointIndex)
 	humanoid:MoveTo(waypoints[nextwaypointIndex].Position)
 end
 
-function patrolPath()
-	config.currentState = "Patrolling"
-	humanoid.WalkSpeed = 8
-	loadedAnimations.Walk:Play()
-	loadedAnimations.Walk.Looped = true
-	followPath(patrolWaypoints[currentPatrolNode].Position + config.assignedPatrolPath.Position,true)
-	currentPatrolNode+=1
-	if currentPatrolNode > #patrolWaypoints then 
-		currentPatrolNode = 1
-	end
-end
+--function patrolPath() -- this npc doesn't patrol
+--	config.currentState = "Patrolling"
+--	humanoid.WalkSpeed = 8
+--	loadedAnimations.Walk:Play()
+--	loadedAnimations.Walk.Looped = true
+--	followPath(patrolWaypoints[currentPatrolNode].Position + config.assignedPatrolPath.Position,true)
+--	currentPatrolNode+=1
+--	if currentPatrolNode > #patrolWaypoints then 
+--		currentPatrolNode = 1
+--	end
+--end
 
 humanoid.StateChanged:Connect(function(old,new)
 	if old == Enum.HumanoidStateType.Jumping then 
@@ -648,7 +648,9 @@ function combatControl()
 					if pStats.States.SpStates.UsingLongSkill or pStats.States.SpStates.UsingMediumSkill or pStats.States.SpStates.UsingShortSkill then --if the player is using a skill then you want to dodge
 						blockChance -= skillWeight
 						dodgeChance += skillWeight
-					elseif distance >= config.Range.Short then -- if the person isn't using skills but is attacking and isn't in melee range then you call the bluff and keep going.
+					elseif distance >= config.Range[pStats.EquippedItem.Range] then 
+						-- if the person attacking the npc isn't in the range that it deems would be close enough to do damage!
+						-- this implementation allows for the use of ranged weapons against the npcs without them breaking and getting confused for the most part.
 						blockChance = 1
 						dodgeChance = 1
 						bluffChance = 98
@@ -801,15 +803,16 @@ while humanoid.Health > 0 do -- this one simply moves towards the player that is
 		local complete = followPath(Players[trueTarget.Name].Character.PrimaryPart.Position)
 		task.wait(.3) --this limits the amount of times the controller actually recalculates the path .3 worked best for me.
 	elseif config.currentState ~= "Patrolling" and config.currentState ~= "Targetting" and config.currentCombatState == "" and config.currentState ~= "Stationary" then 
-		print("patrolling!")
+		--print("patrolling!") -- this npc doesn't patrol
 		loadedAnimations.Run:Stop()
 		if config.currentState == "Idle" then
+			print("Idling right now!")
 			loadedAnimations.Idle:Play()
 			loadedAnimations.Idle.Looped = true
 			task.wait(math.random(5,30)/10)
 			loadedAnimations.Idle:Stop()
 		end
-		patrolPath()	
+		--patrolPath()	-- this npc doesn't patrol
 	end 
 	lastPosition = npc.HumanoidRootPart.Position
 	task.wait(.05)
