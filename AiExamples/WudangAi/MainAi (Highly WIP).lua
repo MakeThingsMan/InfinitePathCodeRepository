@@ -438,23 +438,42 @@ local combatSwitch = Switch() -- Here you put any and all actions you want the A
 	end)
 	
 	:case("GapClose",function() -- The boss jumps towards the enemy of choice very quickly 
-		
+		-- pseudocode | This assumes that obviously the player is already in the range of the skill for it to trigger! | 
+		-- pick the location behind the player chosen to be the teleport location 
+		-- start the animation
+		-- update the location as the animation plays
+		-- move the npc to the location in question
+		-- deal damage and play the recovery animation 
 	end)
 	
 	:case("WaterDragonSeal",function() -- A massive aoe attack that summons pillars of pure water qi around the entire boss arena if the player gets too far away.
-		
+		-- pseudocode | This assumes that obviously the player is already in the range of the skill for it to trigger! | 
+		-- start the animation 
+		-- give the npc superarmor 
+		-- pick the locations for the pillars 
+		-- start the vfx 
+		-- do the cylindrical checks to see if there's someone in the area
+		-- deal the damage
 	end)
 	
 	:case("WaterCoil",function() -- The boss surrounds themsevles with water temporarily enveloping anyone in the area and stopping their movement.
-		
+		-- pseudocode | This assumes that obviously the player is already in the range of the skill for it to trigger! | 
+		-- start the animation 
 	end)
 	
 	:case("ChargedSlash",function()
-		
+		-- pseudocode | This assumes that obviously the player is already in the range of the skill for it to trigger! |
+		-- start the animation 
+		-- create the projectile that needs to be sent out 
+		-- let the projectile handler do the rest * NOTE TO SELF ACTUALLY MAKE A PROJECTILE HANDLER! * 
 	end)
 	
 	:case("WudangPalm",function() -- A palm strike that sends the enemy flying away in the opposite direction. Deals pure neutral damage if the boss isn't in second phase. 
-		
+		-- pseudocode | This assumes that obviously the player is already in the range of the skill for it to trigger! | 
+		-- start the aniomation 
+		-- deal the damage assuming you haven't been hit 
+		-- make the vfx appear
+		-- make a vector force that's in direction the npc is facing push the player 
 	end)
 	
 	:default(function() --this is required.
