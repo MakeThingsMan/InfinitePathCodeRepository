@@ -308,9 +308,6 @@ local keyboardInput = UIS.InputBegan:Connect(function(inputObject,gameProcessedE
 				if UIS:IsKeyDown(Enum.KeyCode.S) or UIS:IsKeyDown(Enum.KeyCode.A) or UIS:IsKeyDown(Enum.KeyCode.D) then 
 					direction += Character.PrimaryPart.CFrame:VectorToWorldSpace(Vector3.new(0,0,-17))
 					dodgeDirection = "DodgeForward"
-				else
-					direction = Character.PrimaryPart.CFrame:VectorToWorldSpace(Vector3.new(0,0,12))
-					dodgeDirection = "DodgeBack"
 				end
 			end 
 		end
