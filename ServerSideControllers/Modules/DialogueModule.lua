@@ -151,6 +151,8 @@ end
 
 
 function Dialogue.PlayDialogue(dGUI,Dialogue)
+	-- for this one you could iterate through the text and once you get to a special character, in this case the italics, you can just check to see where the next
+	-- instance of the italics is then you can italicize the whole thing
 	local box = dGUI.DialogueBox
 	local textSpeed = .04
 	local char	
@@ -186,6 +188,8 @@ function Dialogue.ResetGUI(DialogueGui,dialogueButtonConnections)
 end
 
 function textAugments(char,cont,text,i)
+	-- instead of giving the text back to the function that called this you should instead make it so this function prints out the whole special indicator along 
+	-- with the character in question. I.E instead of returning <b>Q</b> you make it print out <b>Q</b> which would resolve the problem with printing out the actual special case.
 	if char == "|" then
 		if char == "|" and  cont then
 			cont = false 
